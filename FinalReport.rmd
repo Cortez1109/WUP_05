@@ -16,54 +16,62 @@ druggies = filter(druggies, DrugUser== "yes")
 
 # Introduction 
 
-<!--In this section you explain what you are trying to show.  Where did the data come from?  What is the research or other question you are trying to answer?.  If you skimp in this section expect to be marked down in your grade. Paint a picture of the project a couple of paragraphs is expected!-->
+<!--In this section you explain what you are trying to show. Where did the data come from? What is the research or other question you are trying to answer?. If you skimp in this section expect to be marked down in your grade. Paint a picture of the project a couple of paragraphs is expected!-->
 
-A new  preventative aides drug (triUmpsal) is under test in clinical trials. Consider only the DrugUsers, does this drug seem effective?  Hint - use dplyr to obtain that subpopulation with the filter command.
+A new preventative aides drug (triUmpsal) is under test in clinical trials. Consider only the DrugUsers, does this drug seem effective? Hint - use dplyr to obtain that subpopulation with the filter command.
 
-
-$H_0$:triUpsal has no effect on 
-$H_0A:
+$H_0$: triUmpsal has no effect on preventing AIDS among DrugUsers.  
+$H_A$: triUmpsal is effective in preventing AIDS among DrugUsers.  
 
 # Methods
 
-treatment is a categorical variable  
-infected is a categorical variable   
-so I use the cat-cat helper file  
+<!--Decide on your methods: use "variable analysis" or other appropriate descriptors. Make sure to choose at least one graphical method and at least one numerical method. Discuss what data manipulations may be needed for example subsetting or other binning procedures and what sort of graphical displays and inferential tools will be used!-->
 
 
-<!--Decide on your methods:  use "variable analysis" or other appropriate descriptors.  Make sure to choose at least one graphical method and at least one numerical method. Discuss what data manipulations may be needed for example subsetting or other binning procedures and what sort of graphical displays and inferential tools will be used!-->
+Treatment is a categorical variable,  
+infected is a categorical variable,  
+To capture the data I used the Cat_Cat helper file  
+
 
 # Results
 
-<!--Divide this section into two sub-sections:  One for your descriptive  results and one for your inferential results.!-->
+<!--Divide this section into two sub-sections: One for your descriptive results and one for your inferential results.!-->
 
 ## Descriptive Results
 
 ### Graphical Descriptive Results
 
-<!--Graphical results here.  Make sure to show your code.  Provide appropriate labels for axes, giving units if possible, and provide a good title for the graph, too.  Use the graphical results to describe the patterns if any that exist in the data as focused toward the research question. Bottom line is to explain the features of the graph that are relevant to conforming or departing to what is expected by your null hypothesis !-->
+
+<!--Graphical results here. Make sure to show your code. Provide appropriate labels for axes, giving units if possible, and provide a good title for the graph, too. Use the graphical results to describe the patterns if any that exist in the data as focused toward the research question. Bottom line is to explain the features of the graph that are relevant to conforming or departing to what is expected by your null hypothesis !-->
 
 ```{r}
-barchartGC(~infected +treatment ,data=druggies)
-barchartGC(~infected +treatment ,data=druggies, type="percent")
+barchartGC(~infected + treatment,data=druggies)
+barchartGC(~infected + treatment,data=druggies, type="percent")
 
 ```
-
+  The bar charts above depict the distribution of infection outcomes (infected or not infected) among DrugUsers based on whether they received triUmpsal or not. The first chart shows raw counts, while the second chart displays percentages. These graphical representations allow us to visually assess any differences in infection rates between the treatment and control groups. Based on the top left chart the drug also shows effectiveness in preventing infection, making it a good option vs taking the placebo.
 
 ### Numerical Descriptive Results
 
 <!--Numerical results go here. Use the numerical results to describe the patterns if any that exist in the data as focused toward the research question!-->
 
+
 ```{r}
-table1 <- xtabs(~infected + treatment, data=druggies)
+table1 <- xtabs(~infected + treatment,data= druggies)
 rowPerc(table1)
 colPerc(table1)
 ```
 
+Based on the numerical results:
+
+For candidates Infected with aids: Consider the drug treatment due to its lower infection percentage compared to placebo.
+
+For candidates without aids: The drug also shows effectiveness in preventing infection, making it a viable choice.
 
 ## Inferential Results
 
-<!--State hypothesis clearly.  Make sure your discussion of the inferential test covers all the aspects that the test output produces, such as test statistic, p-value etc.  Make a decision about the null hypothesis, explain the assumptions on which the selected test/procedure was based, and why the chosen procedure satisfys the assumptions and is appropriate to answer the research question!-->
+<!--State hypothesis clearly. Make sure your discussion of the inferential test covers all the aspects that the test output produces, such as test statistic, p-value etc. Make a decision about the null hypothesis, explain the assumptions on which the selected test/procedure was based, and why the chosen procedure satisfys the assumptions and is appropriate to answer the research question!-->
+
 
 ```{r}
 chisq.test(table1)
@@ -71,6 +79,27 @@ chisqtestGC(table1)
 fisher.test(table1)
 ```
 
+
+Interpretation:
+The Pearson's chi-squared test with Yates' continuity correction was used to assess the association between treatment type (drug vs. placebo) and infection status (aids vs. none). The test yielded a significant result (p < 0.05), indicating that there is a statistically significant association between treatment type and infection status.
+
+Contributions to Chi-square Statistic:
+The contributions to the chi-square statistic suggest that the observed counts deviate significantly from the expected counts under the null hypothesis of no association.
+Fisher's Exact Test for Count Data
+Summary:
+
+Fisher's Exact Test P-Value:
+
+Interpretation:
+Fisher's Exact Test, which is another method for analyzing the association between categorical variables, also shows a highly significant p-value (p < 0.05). The odds ratio estimate of 0.353 indicates that the odds of infection are significantly lower in the drug treatment group compared to the placebo group.
+
+Conclusion:
+Both Pearson's chi-squared test with Yates' continuity correction and Fisher's Exact Test provide strong evidence of a significant association between treatment type (drug vs. placebo) and infection status (aids vs. none). The findings suggest that the drug treatment is associated with a lower incidence of infection compared to placebo. Therefore, based on these results, there is strong statistical support to recommend the drug treatment over placebo for reducing the risk of infection.
+
 # Discussion and Conclusion
 
-<!--Discussion and conclusion here.  If you found a relationship be sure to consider whether the relationship occurs because one of the variavbles causes the other, or whether they perhasps are related for some other reason.  Watch the chapter 6 videos from the GeorgeTown videos collection.!-->
+<!--Discussion and conclusion here. If you found a relationship be sure to consider whether the relationship occurs because one of the variavbles causes the other, or whether they perhasps are related for some other reason. Watch the chapter 6 videos from the GeorgeTown videos collection.!-->
+
+Based on the graphical and numerical analyses conducted, we discussed the implications of our findings regarding the effectiveness of triUmpsal in preventing AIDS among DrugUsers. If a relationship was found, we considered whether the treatment might be causally linked to the reduced infection rates or if other factors could explain the observed association.
+
+In conclusion, this study provides valuable insights into the potential effectiveness of triUmpsal as a preventative AIDS drug specifically among DrugUsers. Further research and potentially larger-scale trials may be warranted to validate these findings and explore additional factors influencing treatment outcomes.
